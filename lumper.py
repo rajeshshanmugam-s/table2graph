@@ -80,5 +80,5 @@ class DataLumper:
 
 
 # '/Users/rajesh/Documents/Clothing Sales/April_sales_19.csv'
-x = DataLumper('train.csv')
-print(x.data_type_explorer())
+# x = DataLumper('train.csv')
+# print(x.data_type_explorer())

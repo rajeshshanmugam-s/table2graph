@@ -1,0 +1,11 @@
+# Ignore all JSON Files
+*.json
+
+# Ignore Folder Named Charts
+charts
+
+# Ignore all CSV files
+*.csv
+
+# Idea
+.idea

@@ -16,7 +16,7 @@ class GraphAdviser:
         '''
         charts = {}
         univariate_charts = self.univariate_analysis()
-        bivariate_charts = self.bivariate_analysis
+        bivariate_charts = self.bivariate_analysis()
         charts['Univariate Charts'] = univariate_charts
         charts['Bivariate Charts'] = bivariate_charts
         return charts
@@ -62,7 +62,7 @@ class GraphAdviser:
         return univariate_charts
 
 
-    @property
+    # @property
     def bivariate_analysis(self):
         '''
         Based on the type of Data charts are recommended

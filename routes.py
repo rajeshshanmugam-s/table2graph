@@ -14,7 +14,7 @@ def main_route():
 def basic_template():
     return render_template('template.html', my_string="Wheeeee!", my_list=[0,1,2,3,4,5])
 
-@app.route('/uploader')
+@app.route('/uploader', methods=['POST'])
 def sample():
     if not os.path.exists('Data'):
         os.mkdir('Data')

@@ -1,11 +1,26 @@
 from lumper import DataLumper
 from adviser import GraphAdviser
-from flask import Flask, request
+from flask import Flask, request, render_template
 import os
 import json
 
 app = Flask(__name__)
 
+@app.route('/')
+def main_route():
+    return'Hello World';
+
+@app.route("/test")
+def basic_template():
+    return render_template('template.html', my_string="Wheeeee!", my_list=[0,1,2,3,4,5])
+
+@app.route('/uploader')
+def sample():
+    if not os.path.exists('Data'):
+        os.mkdir('Data')
+    f = request.files['file']
+    f.save('Data/'+f.filename)
+    return 'File Saved'
 
 @app.route('/upload')
 def data_gunner():
@@ -24,10 +39,5 @@ def data_gunner():
     return json.dumps(charts)
 
 
-@app.route('/')
-def test():
-    return'Hello World'
-
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=6000)
+    app.run(host='0.0.0.0', debug=True, port=1024)

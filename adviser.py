@@ -14,11 +14,16 @@ class GraphAdviser:
         Architect the dict from the Univariate and Bultivariate Analysis
         :return: Dict of Univariate and Multivariate
         '''
-        charts = {}
-        univariate_charts = self.univariate_analysis()
-        bivariate_charts = self.bivariate_analysis()
-        charts['Univariate Charts'] = univariate_charts
-        charts['Bivariate Charts'] = bivariate_charts
+
+        charts = [{'data': self.univariate_analysis(),
+                  'analysis_name': 'Univariant Analysis',
+                  'analysis_type': 'Univariant analysis',
+                  },
+                 {'data': self.bivariate_analysis(),
+                  'analysis_name': 'Bivariate Analysis',
+                  'analysis_type': 'Bivariate analysis',
+                  }]
+
         return charts
 
     def univariate_analysis(self):
@@ -33,12 +38,10 @@ class GraphAdviser:
         box_plot = []
         line_plot = []
 
-        univariate_charts = {}
-
         for feature in self.categorical_data:
-            piechart.append(helper.data_organiser(feature=feature, df=self.df, aggregate='count'))
+            piechart.append(helper.data_organiser(feature=feature, df=self.df, chart='piechart'))
             plotter.univariate_piechart_maker(self.df, feature)
-            barchart.append(helper.data_organiser(feature=feature, df=self.df, aggregate='count'))
+            barchart.append(helper.data_organiser(feature=feature, df=self.df, chart='barchart'))
             plotter.univariate_barchart_maker(self.df, feature)
             # scatter_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='count'))
 
@@ -51,13 +54,18 @@ class GraphAdviser:
             line_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature Values'))
             plotter.univariate_line_plot_maker(df=self.df, column=feature)
 
-        univariate_charts['Piechart'] = {'Feature': piechart}
-        'Need to reconsider the Histogrqam'
-        univariate_charts['Histogram'] = {'Feature': histogram}
-        univariate_charts['Barchart'] = {'Feature': barchart}
-        univariate_charts['Box Plot'] = {'Feature': box_plot}
-        # univariate_charts['Scatter plot'] = {'Feature': scatter_plot}
-        univariate_charts['Line Plot'] = {'Feature':line_plot}
+        univariate_charts = []
+        univariate_charts.append({'chart_type':'piechart',
+                                  'chart_data': piechart})
+        # 'Need to reconsider the Histogrqam'
+        univariate_charts.append({'chart_type': 'Barchart',
+                                  'chart_data': barchart})
+        univariate_charts.append({'chart_type': 'Boxplot',
+                                  'chart_data': box_plot})
+        univariate_charts.append({'chart_type': 'Histogram',
+                                  'chart_data': histogram})
+        univariate_charts.append({'chart_type': 'Lineplot',
+                                  'chart_data': line_plot})
 
         return univariate_charts
 
@@ -73,8 +81,6 @@ class GraphAdviser:
         histogram = []
         dot_plot = []
         line_chart = []
-
-        bivariate_charts = {}
 
         for x_feature in self.categorical_data:
             for y_feature in self.continous_data:
@@ -94,6 +100,7 @@ class GraphAdviser:
         for x_feature in self.continous_data:
             for y_feature in self.continous_data:
                 if x_feature != y_feature:
+                    #TODO: Need to get update from Karthik for further proceddings.
                     histogram.append(helper.data_organiser(df=self.df, aggregate='Feature Values', x_feature=x_feature,
                                                            y_feature=y_feature))
                     plotter.bivariate_histogram_maker(df=self.df, x=x_feature, y=y_feature)
@@ -104,11 +111,17 @@ class GraphAdviser:
                                                             y_feature=y_feature))
                     plotter.bivariate_line_plot_maker(df=self.df, x=x_feature, y=y_feature)
 
-        bivariate_charts['Scatter_Plot'] ={'Feature': scatter_plot}
-        bivariate_charts['Histogram'] = {'Feature': histogram}
+        bivariate_charts = []
+        bivariate_charts.append({'chart_type':'scatter plot',
+                                 'chart_data': scatter_plot})
+        bivariate_charts.append({'chart_type': 'Histogram',
+                                 'chart_data': histogram})
+        bivariate_charts.append({'chart_type': 'Line Chart',
+                                 'chart_data': line_chart})
+        bivariate_charts.append({'chart_type': 'Bar chart',
+                                 'chart_data': barchart})
+
+
         #TODO: Think both dot plot and scatter are giving the same kind of graphs
-        # bivariate_charts['Dot Plot'] = {'Feature': dot_plot}
-        bivariate_charts['Line Chart'] = {'Feature': line_chart}
-        bivariate_charts['Bar Chart'] = {'Feature': barchart}
 
         return bivariate_charts

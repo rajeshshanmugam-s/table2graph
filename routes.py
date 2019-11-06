@@ -2,6 +2,7 @@ from lumper import DataLumper
 from adviser import GraphAdviser
 from flask import Flask, request
 import os
+import json
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ def data_gunner():
     y = GraphAdviser(dataframe=df, continous_data=cont_data, categorical_data=cat_data)
     charts = y.output_architect()
 
-    return charts
+    return json.dumps(charts)
 
 
 @app.route('/')

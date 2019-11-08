@@ -46,15 +46,20 @@ class GraphAdviser:
             # scatter_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='count'))
 
         for feature in self.continous_data:
-            histogram.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature Values'))
+            histogram.append(helper.data_organiser(feature=feature, df=self.df, chart='Hstogram'))
             plotter.univariate_histogram_maker(self.df, feature)
             # scatter_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature values'))
-            box_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature values'))
+            # TODO: Check with frontend for boxplot whether they need quartile values or data .
+            box_plot.append(helper.data_organiser(feature=feature, df=self.df, chart='BoxPlot'))
             plotter.univariate_boxplot_maker(self.df, feature)
-            line_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature Values'))
-            plotter.univariate_line_plot_maker(df=self.df, column=feature)
+
+            #TODO: Need to add a logic for Date column. Damo bro said we can ask that from User end.
+
+            # line_plot.append(helper.data_organiser(feature=feature, df=self.df, chart='LinePlot'))
+            # plotter.univariate_line_plot_maker(df=self.df, column=feature)
 
         univariate_charts = []
+
         univariate_charts.append({'chart_type':'piechart',
                                   'chart_data': piechart})
         # 'Need to reconsider the Histogrqam'
@@ -64,8 +69,8 @@ class GraphAdviser:
                                   'chart_data': box_plot})
         univariate_charts.append({'chart_type': 'Histogram',
                                   'chart_data': histogram})
-        univariate_charts.append({'chart_type': 'Lineplot',
-                                  'chart_data': line_plot})
+        # univariate_charts.append({'chart_type': 'Lineplot',
+        #                           'chart_data': line_plot})
 
         return univariate_charts
 
@@ -85,13 +90,13 @@ class GraphAdviser:
         for x_feature in self.categorical_data:
             for y_feature in self.continous_data:
                 if x_feature != y_feature:
-                    scatter_plot.append(helper.data_organiser(df=self.df, aggregate='X Feature Values', x_feature=x_feature,
+                    scatter_plot.append(helper.data_organiser(df=self.df, chart='Ordinalscatterplot', x_feature=x_feature,
                                                               y_feature=y_feature))
                     plotter.bivariate_scatterplot_maker(df=self.df, x=x_feature, y=y_feature)
-                    barchart.append(helper.data_organiser(df=self.df, aggregate='X Feature Values', x_feature=x_feature,
+                    barchart.append(helper.data_organiser(df=self.df, chart='Barchart', x_feature=x_feature,
                                                           y_feature=y_feature))
-                    line_chart.append(helper.data_organiser(df=self.df, aggregate='X Feature Values', x_feature=x_feature,
-                                                        y_feature=y_feature))
+                    line_chart.append(helper.data_organiser(df=self.df, chart='linechart', x_feature=x_feature,
+                                                            y_feature=y_feature))
         # for x_feature in self.continous_data:
         #     for y_feature in self.categorical_data:
         #         dot_plot.append(helper.data_organiser(df=self.df, aggregate='Feature Values', x_feature=x_feature,
@@ -100,14 +105,13 @@ class GraphAdviser:
         for x_feature in self.continous_data:
             for y_feature in self.continous_data:
                 if x_feature != y_feature:
-                    #TODO: Need to get update from Karthik for further proceddings.
-                    histogram.append(helper.data_organiser(df=self.df, aggregate='Feature Values', x_feature=x_feature,
+                    histogram.append(helper.data_organiser(df=self.df, chart='Histogram', x_feature=x_feature,
                                                            y_feature=y_feature))
                     plotter.bivariate_histogram_maker(df=self.df, x=x_feature, y=y_feature)
-                    scatter_plot.append(helper.data_organiser(df=self.df, aggregate='Feature Values', x_feature=x_feature,
+                    scatter_plot.append(helper.data_organiser(df=self.df, chart='scatterplot', x_feature=x_feature,
                                                               y_feature=y_feature))
                     plotter.bivariate_scatterplot_maker(df=self.df, x=x_feature, y=y_feature)
-                    line_chart.append(helper.data_organiser(df=self.df, aggregate='Feature Values', x_feature=x_feature,
+                    line_chart.append(helper.data_organiser(df=self.df, chart='linechart', x_feature=x_feature,
                                                             y_feature=y_feature))
                     plotter.bivariate_line_plot_maker(df=self.df, x=x_feature, y=y_feature)
 

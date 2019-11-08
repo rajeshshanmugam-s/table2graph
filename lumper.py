@@ -1,3 +1,5 @@
+from urllib import error
+
 import pandas as pd
 import numpy as np
 
@@ -17,7 +19,7 @@ class DataLumper:
         :return: Data frame
         '''
 
-        df = pd.read_csv(self.file_path)
+        df = pd.read_csv(self.file_path, encoding = "ISO-8859-1", error_bad_lines=False)
         df = self.null_handler(df)
         return df
 

@@ -2,12 +2,17 @@ from lumper import DataLumper
 from adviser import GraphAdviser
 from flask import Flask, request, render_template, jsonify
 import os
-import json
+import logging
 
 app = Flask(__name__)
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+
 @app.route('/')
 def main_route():
+    logger.info("Test Route")
     return'Hello World';
 
 
@@ -19,18 +24,19 @@ def basic_template():
 @app.route('/upload', methods=['POST'])
 def data_gunner():
     if not os.path.exists('Data'):
+        logger.info("Creating Data Folder")
         os.mkdir('Data')
     f = request.files['file']
     f.save('Data/'+f.filename)
+    logger.debug("File saved in the name {}".format(f.filename))
+    # ToDO: Dataframe was creating multiple times
     x = DataLumper('Data/'+f.filename)
     df = x.data_frame_loader()
     # TODO: Remove this
-    # df = df[:11]
+    df = df[:11]
     cat_data, cont_data = x.data_type_explorer()
-    print(cat_data)
-    print(cont_data)
-    from click import pause
-    pause()
+    logger.info("Categorical columns {}".format(cat_data))
+    logger.info("Continuous columns {}".format(cont_data))
     y = GraphAdviser(dataframe=df, continous_data=cont_data, categorical_data=cat_data)
     charts = y.output_architect()
 

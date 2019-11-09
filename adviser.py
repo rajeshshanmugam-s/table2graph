@@ -1,10 +1,14 @@
 import utils as helper
 import schemer as plotter
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class GraphAdviser:
     # TODO: Check for connecting loading pandas df directly from here
     def __init__(self, continous_data, categorical_data, dataframe):
+        logger.info("Inside Graphadvisor")
         self.continous_data = continous_data
         self.categorical_data = categorical_data
         self.df = dataframe
@@ -14,7 +18,7 @@ class GraphAdviser:
         Architect the dict from the Univariate and Bultivariate Analysis
         :return: Dict of Univariate and Multivariate
         '''
-
+        logger.info("Inside the output architect")
         charts = [{'data': self.univariate_analysis(),
                   'analysis_name': 'Univariant Analysis',
                   'analysis_type': 'Univariant analysis',
@@ -31,6 +35,7 @@ class GraphAdviser:
         Based on the type of data, Which type of chart is going to be suggested.
         :return: Dict with chart Names.
         '''
+        logger.info("Inside the Univariate Analysis")
         histogram = []
         piechart = []
         barchart = []
@@ -39,6 +44,7 @@ class GraphAdviser:
         line_plot = []
 
         for feature in self.categorical_data:
+            logger.info("Categorical Column {}".format(feature))
             piechart.append(helper.data_organiser(feature=feature, df=self.df, chart='piechart'))
             plotter.univariate_piechart_maker(self.df, feature)
             barchart.append(helper.data_organiser(feature=feature, df=self.df, chart='barchart'))
@@ -46,6 +52,7 @@ class GraphAdviser:
             # scatter_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='count'))
 
         for feature in self.continous_data:
+            logger.info("Continuous Column {}".format(feature))
             histogram.append(helper.data_organiser(feature=feature, df=self.df, chart='Hstogram'))
             plotter.univariate_histogram_maker(self.df, feature)
             # scatter_plot.append(helper.data_organiser(feature=feature, df=self.df, aggregate='Feature values'))
@@ -87,9 +94,13 @@ class GraphAdviser:
         dot_plot = []
         line_chart = []
 
+        logger.info("Inside Bivariate analysis")
+
         for x_feature in self.categorical_data:
             for y_feature in self.continous_data:
                 if x_feature != y_feature:
+                    logger.info("Category vs Continuous")
+                    logger.info("X_feature: {}, y_feature: {}".format(x_feature, y_feature))
                     scatter_plot.append(helper.data_organiser(df=self.df, chart='Ordinalscatterplot', x_feature=x_feature,
                                                               y_feature=y_feature))
                     plotter.bivariate_scatterplot_maker(df=self.df, x=x_feature, y=y_feature)
@@ -105,6 +116,8 @@ class GraphAdviser:
         for x_feature in self.continous_data:
             for y_feature in self.continous_data:
                 if x_feature != y_feature:
+                    logger.info("Continuous vs Continuous")
+                    logger.info("X_feature: {}, Y_feature: {}".format(x_feature, y_feature))
                     histogram.append(helper.data_organiser(df=self.df, chart='Histogram', x_feature=x_feature,
                                                            y_feature=y_feature))
                     plotter.bivariate_histogram_maker(df=self.df, x=x_feature, y=y_feature)
